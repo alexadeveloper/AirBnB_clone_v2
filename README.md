@@ -26,6 +26,11 @@ To start, navigate to the project folder and enter `./console.py` in the shell.
 Ex:
 `create BaseModel`
 
+#### Create with properties
+`create <class name> <attribute>`
+Ex:
+`create Place name="Little House"`
+
 #### Show
 `show <class name> <object id>`
 Ex:

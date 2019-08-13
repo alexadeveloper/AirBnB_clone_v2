@@ -42,8 +42,24 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            obj = eval("{}()".format(my_list[0]))
-            obj.save()
+            if (len(my_list) > 0):
+                obj = eval("{}()".format(my_list[0]))
+                obj.save()
+            if (len(my_list) > 1):
+                ls_tmp = my_list[1:]
+                objects = storage.all()
+                key = my_list[0] + '.' + obj.id
+                v = objects[key]
+                for i in range(len(ls_tmp)):
+                    tmp = ls_tmp[i].split("=")
+                    try:
+                        tmp[1] = tmp[1].replace('"', '')
+                        v.__dict__[tmp[0]] = eval(tmp[1].replace('_', ' '))
+                    except Exception:
+                        v.__dict__[tmp[0]] = tmp[1].replace('_', ' ')
+                        v.save()
+
+
             print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
