@@ -31,10 +31,10 @@ class FileStorage:
         tmp = {}
         if not cls:
             return obj
-        for key in obj:
+        for key, value in obj.items():
             name = key.split('.')
             if name[0] == cls.__name__:
-                tmp.update(obj)
+                tmp.update({key: value})
         return tmp
 
     def new(self, obj):
