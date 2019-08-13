@@ -43,13 +43,9 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             if (len(my_list) > 0):
-                obj = eval("{}()".format(my_list[0]))
-                obj.save()
+                v = eval("{}()".format(my_list[0]))
             if (len(my_list) > 1):
                 ls_tmp = my_list[1:]
-                objects = storage.all()
-                key = my_list[0] + '.' + obj.id
-                v = objects[key]
                 for i in range(len(ls_tmp)):
                     tmp = ls_tmp[i].split("=")
                     try:
@@ -57,10 +53,8 @@ class HBNBCommand(cmd.Cmd):
                         v.__dict__[tmp[0]] = eval(tmp[1].replace('_', ' '))
                     except Exception:
                         v.__dict__[tmp[0]] = tmp[1].replace('_', ' ')
-                        v.save()
-
-
-            print("{}".format(obj.id))
+            v.save()
+            print("{}".format(v.id))
         except SyntaxError:
             print("** class name missing **")
         except NameError:
@@ -133,6 +127,9 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representation of all instances
         Exceptions:
             NameError: when there is no object taht has the name
+
+            No se puede cambiar mucho la estructura para que no 
+            falle filestorage
         """
         objects = storage.all()
         my_list = []
