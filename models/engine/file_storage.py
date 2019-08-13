@@ -22,7 +22,6 @@ class FileStorage:
     all_classes = {"BaseModel", "User", "State", "City",
                    "Amenity", "Place", "Review"}
 
-
     def all(self, cls=None):
         """returns a dictionary
         Return:
