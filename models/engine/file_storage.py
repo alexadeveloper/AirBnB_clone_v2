@@ -19,13 +19,24 @@ class FileStorage:
     """
     __file_path = "file.json"
     __objects = {}
+    all_classes = {"BaseModel", "User", "State", "City",
+                   "Amenity", "Place", "Review"}
 
-    def all(self):
+
+    def all(self, cls=None):
         """returns a dictionary
         Return:
             returns a dictionary of __object
         """
-        return self.__objects
+        obj = self.__objects
+        tmp = {}
+        if not cls:
+            return obj
+        for key in obj:
+            name = key.split('.')
+            if name[0] == cls.__name__:
+                tmp.update(obj)
+        return tmp
 
     def new(self, obj):
         """sets __object to given obj
@@ -35,6 +46,16 @@ class FileStorage:
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             self.__objects[key] = obj
+
+    def delete(self, obj=None):
+        """ another comment """
+        obje = self.__objects
+        for key in obje:
+            idn = key.split('.')
+            if obj.id == idn[1]:
+                del self.__objects[key]
+                break
+        self.save()
 
     def save(self):
         """serialize the file path to JSON file path
