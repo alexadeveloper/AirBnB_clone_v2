@@ -27,15 +27,16 @@ class FileStorage:
         Return:
             returns a dictionary of __object
         """
-        obj = self.__objects
-        tmp = {}
         if not cls:
-            return obj
-        for key, value in obj.items():
-            name = key.split('.')
-            if name[0] == cls.__name__:
-                tmp.update({key: value})
-        return tmp
+            return self.__objects
+        else:
+            tmp = {}
+            obj = self.__objects
+            for key, value in obj.items():
+                name = key.split('.')
+                if name[0] == cls.__name__:
+                    tmp.update({key: value})
+            return tmp
 
     def new(self, obj):
         """sets __object to given obj
@@ -47,14 +48,17 @@ class FileStorage:
             self.__objects[key] = obj
 
     def delete(self, obj=None):
-        """ another comment """
-        obje = self.__objects
-        for key in obje:
-            idn = key.split('.')
-            if obj.id == idn[1]:
-                del self.__objects[key]
-                break
-        self.save()
+        """Delete specific object from _objects
+        Args:
+            obj: given object
+        """
+        if obj:
+            for key in self.__objects:
+                idn = key.split('.')
+                if obj.id == idn[1]:
+                    del self.__objects[key]
+                    break
+            self.save()
 
     def save(self):
         """serialize the file path to JSON file path
