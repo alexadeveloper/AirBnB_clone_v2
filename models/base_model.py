@@ -48,8 +48,13 @@ class BaseModel:
         Return:
             returns a string of class name, id, and dictionary
         """
-        return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.to_dict())
+        try:
+            if environ['HBNB_TYPE_STORAGE'] == "db":
+                return "[{}] ({}) {}".format(
+                    type(self).__name__, self.id, self.to_dict())
+        except:
+            return "[{}] ({}) {}".format(
+                type(self).__name__, self.id, self.__dict__)
 
     def __repr__(self):
         """return a string representaion
