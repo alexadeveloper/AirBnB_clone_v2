@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
 import cmd
-import models
-from models.engine.file_storage import FileStorage
+from models import storage
 from datetime import datetime
 from models.base_model import BaseModel
 from models.user import User
@@ -44,10 +43,8 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             v = eval("{}()".format(my_list[0]))
-            if (len(line) > 1):
-                ls_tmp = my_list[1:]
-                for i in range(len(ls_tmp)):
-                    tmp = ls_tmp[i].split("=")
+            for i in range(1, len(my_list)):
+                    tmp = my_list[i].split("=")
                     tmp[1] = tmp[1].replace('"', '')
                     tmp[1] = tmp[1].replace('_', ' ')
                     try:
