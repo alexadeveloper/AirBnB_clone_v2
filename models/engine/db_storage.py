@@ -30,8 +30,7 @@ class DBStorage:
                             environ['HBNB_MYSQL_USER'],
                             environ['HBNB_MYSQL_PWD'],
                             environ['HBNB_MYSQL_HOST'],
-                            environ['HBNB_MYSQL_DB']),
-                    pool_pre_ping=True)
+                            environ['HBNB_MYSQL_DB']), pool_pre_ping=True)
         try:
             if environ['HBNB_ENV'] is 'test':
                 for tbl in reversed(metadata.sorted_tables):
@@ -45,25 +44,7 @@ class DBStorage:
         if cls:
             items = self.__session.query(eval(cls)).all()
         else:
-            ''' Here is the problem need the correct format'''
             items = self.__session.query(State, City).all()
-            '''
-            new_dict = {}
-            for i in range(len(items)):
-                print(items[i])
-
-                tmp = items[i].to_dict()
-                print("*** tmp ***", tmp)
-                new_dict[str(items[i].__class__.__name__) +
-                        "." +
-                        str(items[i].id)] = tmp
-            new_dict2 = {}
-            for key, value in (new_dict).items():
-                print("*** value ***", value)
-                value = eval(value["__class__"])(**value)
-                print("*** key ***", key)
-                new_dict2[key] = value
-            '''
         return items
 
     def new(self, obj):

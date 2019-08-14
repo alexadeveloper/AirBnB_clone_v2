@@ -35,8 +35,6 @@ class FileStorage:
             for key, value in obj.items():
                 name = key.split('.')
                 if name[0] == cls:
-                    print("### name[] value filestorage ###", name[0], type(value))
-                    print("control")
                     tmp.update({key: value})
             return tmp
 

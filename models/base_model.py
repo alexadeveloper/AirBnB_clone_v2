@@ -34,9 +34,11 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     try:
-                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                        value = datetime.strptime(
+                                value, "%Y-%m-%dT%H:%M:%S.%f")
                     except ValueError:
-                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
+                        value = datetime.strptime(
+                                value, "%Y-%m-%dT%H:%M:%S")
                 if key != "__class__":
                     setattr(self, key, value)
         else:
