@@ -6,8 +6,11 @@ from datetime import datetime
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
+from os import environ
+
 
 Base = declarative_base()
+
 
 class BaseModel:
     """This class will defines all common attributes/methods
@@ -30,7 +33,10 @@ class BaseModel:
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                    try:
+                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                    except ValueError:
+                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
                 if key != "__class__":
                     setattr(self, key, value)
         else:
@@ -43,7 +49,7 @@ class BaseModel:
             returns a string of class name, id, and dictionary
         """
         return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+            type(self).__name__, self.id, self.to_dict())
 
     def __repr__(self):
         """return a string representaion
@@ -68,8 +74,15 @@ class BaseModel:
             returns a dictionary of all the key values in __dict__
         """
         my_dict = dict(self.__dict__)
-        del my_dict['_sa_instance_state']
-        my_dict["__class__"] = str(type(self).__name__)
-        my_dict["created_at"] = self.created_at.isoformat()
-        my_dict["updated_at"] = self.updated_at.isoformat()
+        try:
+            if environ['HBNB_TYPE_STORAGE'] == "db":
+                del my_dict['_sa_instance_state']
+        except:
+            try:
+                del my_dict['_sa_instance_state']
+            except:
+                pass
+            my_dict["__class__"] = str(type(self).__name__)
+            my_dict["created_at"] = self.created_at.isoformat()
+            my_dict["updated_at"] = self.updated_at.isoformat()
         return my_dict

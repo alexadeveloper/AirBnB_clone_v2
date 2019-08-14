@@ -127,25 +127,29 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representation of all instances
         Exceptions:
             NameError: when there is no object taht has the name
-
-            No se puede cambiar mucho la estructura para que no 
-            falle filestorage
         """
-        objects = storage.all()
         my_list = []
         if not line:
+            objects = storage.all()
             for key in objects:
-                my_list.append(objects[key])
+                try:
+                    my_list.append(objects[key])
+                except:
+                    my_list.append(key)
             print(my_list)
             return
         try:
             args = line.split(" ")
             if args[0] not in self.all_classes:
                 raise NameError()
+            objects = storage.all(args[0])
             for key in objects:
-                name = key.split('.')
-                if name[0] == args[0]:
-                    my_list.append(objects[key])
+                try:
+                    name = key.split('.')
+                    if name[0] == args[0]:
+                        my_list.append(objects[key])
+                except:
+                    my_list.append(key)
             print(my_list)
         except NameError:
             print("** class doesn't exist **")

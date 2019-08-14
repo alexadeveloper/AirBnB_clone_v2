@@ -11,11 +11,11 @@ from models.place import Place
 from models.review import Review
 from os import environ
 
-
-if environ['HBNB_TYPE_STORAGE'] == 'db':
-    storage = DBStorage()
-    storage.reload()
-else:
+try:
+    if environ['HBNB_TYPE_STORAGE'] == 'db':
+        storage = DBStorage()
+        storage.reload()
+except:
     storage = FileStorage()
     storage.reload()
 

@@ -15,6 +15,10 @@ class DBStorage:
     """
     __engine = None
     __session = None
+    name_cls = {
+                "BaseModel": BaseModel,
+                "State": State,
+                "City": City}
 
     def __init__(self):
         """ Initial connection to sql database
@@ -37,15 +41,28 @@ class DBStorage:
         """ Return only one cls or all in dict form
         """
         if cls:
-            for i in self.__session.query(cls).all():
-                return d.__dict__
+            items = self.__session.query(eval(cls)).all()
         else:
             ''' Here is the problem need the correct format'''
-            items = self.__session.query(State).all()
+            items = self.__session.query(State, City).all()
+            '''
             new_dict = {}
-            for key in items:
-                print("key all db_storage.py", key.to_dict())
-            return new_dict
+            for i in range(len(items)):
+                print(items[i])
+
+                tmp = items[i].to_dict()
+                print("*** tmp ***", tmp)
+                new_dict[str(items[i].__class__.__name__) +
+                        "." +
+                        str(items[i].id)] = tmp
+            new_dict2 = {}
+            for key, value in (new_dict).items():
+                print("*** value ***", value)
+                value = eval(value["__class__"])(**value)
+                print("*** key ***", key)
+                new_dict2[key] = value
+            '''
+        return items
 
     def new(self, obj):
         """ add the object to the current database session
