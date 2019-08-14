@@ -43,17 +43,17 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            if (len(my_list) > 0):
-                v = eval("{}()".format(my_list[0]))
-            if (len(my_list) > 1):
+            v = eval("{}()".format(my_list[0]))
+            if (len(line) > 1):
                 ls_tmp = my_list[1:]
                 for i in range(len(ls_tmp)):
                     tmp = ls_tmp[i].split("=")
+                    tmp[1] = tmp[1].replace('"', '')
+                    tmp[1] = tmp[1].replace('_', ' ')
                     try:
-                        tmp[1] = tmp[1].replace('"', '')
-                        v.__dict__[tmp[0]] = eval(tmp[1].replace('_', ' '))
-                    except Exception:
-                        v.__dict__[tmp[0]] = tmp[1].replace('_', ' ')
+                        v.__dict__[tmp[0]] = eval(tmp[1])
+                    except BaseException:
+                        v.__dict__[tmp[0]] = tmp[1]
             v.save()
             print("{}".format(v.id))
         except SyntaxError:
