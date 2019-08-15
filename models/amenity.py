@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 """This is the amenity class"""
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
+from models.place import place_amenity
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship
+from os import getenv
 
 
 class Amenity(BaseModel):
@@ -8,4 +12,9 @@ class Amenity(BaseModel):
     Attributes:
         name: input name
     """
-    name = ""
+    __table__name = "amenities"
+    name = Column(String(128), nullable=False)
+    if os.getenv("HBN_TYPO_STORAGE") == "db":
+        places = relationship("Place",
+                              secondary=place_amenity,
+                              back_populates="amenities")
