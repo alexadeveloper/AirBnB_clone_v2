@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 """This is the user class"""
-from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String
+from models.base_model import BaseModel
 
 
-class User(BaseModel, Base):
+class User(BaseModel):
     """This is the class for user
     Attributes:
         email: email address
@@ -12,8 +11,7 @@ class User(BaseModel, Base):
         first_name: first name
         last_name: last name
     """
-    __tablename__ = "users"
-    email = Column(String(128), nullable=False)
-    password = Column(String(128), nullable=False)
-    first_name = Column(String(128), nullable=False)
-    last_name = Column(String(128), nullable=False)
+    email = ""
+    password = ""
+    first_name = ""
+    last_name = ""

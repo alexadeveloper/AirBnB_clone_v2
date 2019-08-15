@@ -7,7 +7,6 @@ from sqlalchemy.orm import sessionmaker
 from models.base_model import BaseModel, Base
 from models.state import State
 from models.city import City
-from models.user import User
 from os import environ
 
 
@@ -19,8 +18,7 @@ class DBStorage:
     name_cls = {
                 "BaseModel": BaseModel,
                 "State": State,
-                "City": City,
-                "User": User}
+                "City": City}
 
     def __init__(self):
         """ Initial connection to sql database
