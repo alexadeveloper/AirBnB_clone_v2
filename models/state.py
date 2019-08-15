@@ -24,3 +24,4 @@ class State(BaseModel, Base):
             if name[0] == "City":
                 tmp.append(objs[key])
         return tmp
+

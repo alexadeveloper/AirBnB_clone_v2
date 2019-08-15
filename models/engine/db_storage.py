@@ -7,8 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from models.base_model import BaseModel, Base
 from models.state import State
 from models.city import City
-from models.user import User
-from os import getenv
+from os import environ
 
 
 class DBStorage:
@@ -16,34 +15,37 @@ class DBStorage:
     """
     __engine = None
     __session = None
-    name_cls = {
-                "BaseModel": BaseModel,
-                "State": State,
-                "City": City,
-                "User": User}
 
     def __init__(self):
         """ Initial connection to sql database
         """
-        user = getenv('HBNB_MYSQL_USER')
-        passwd = getenv('HBNB_MYSQL_PWD')
-        host = getenv('HBNB_MYSQL_HOST')
-        db = getenv('HBNB_MYSQL_DB')
         self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.format(user, passwd, host, db),
-            pool_pre_ping=True)
-        if getenv('HBNB_ENV') == 'test':
-            for tbl in reversed(metadata.sorted_tables):
-                self.__engine.execute(tbl.delete())
+                'mysql+mysqldb://{}:{}@{}/{}'.format(
+                            environ['HBNB_MYSQL_USER'],
+                            environ['HBNB_MYSQL_PWD'],
+                            environ['HBNB_MYSQL_HOST'],
+                            environ['HBNB_MYSQL_DB']),
+                    pool_pre_ping=True)
+        try:
+            if environ['HBNB_ENV'] is 'test':
+                for tbl in reversed(metadata.sorted_tables):
+                    self.__engine.execute(tbl.delete())
+        except:
+            pass
 
     def all(self, cls=None):
         """ Return only one cls or all in dict form
         """
         if cls:
-            items = self.__session.query(eval(cls)).all()
+            for i in self.__session.query(cls).all():
+                return d.__dict__
         else:
-            items = self.__session.query(State, City).all()
-        return items
+            ''' Here is the problem need the correct format'''
+            items = self.__session.query(State).all()
+            new_dict = {}
+            for key in items:
+                print("key all db_storage.py", key.to_dict())
+            return new_dict
 
     def new(self, obj):
         """ add the object to the current database session

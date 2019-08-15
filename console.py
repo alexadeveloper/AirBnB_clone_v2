@@ -42,15 +42,17 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            v = eval("{}()".format(my_list[0]))
-            for i in range(1, len(my_list)):
-                    tmp = my_list[i].split("=")
-                    tmp[1] = tmp[1].replace('"', '')
-                    tmp[1] = tmp[1].replace('_', ' ')
+            if (len(my_list) > 0):
+                v = eval("{}()".format(my_list[0]))
+            if (len(my_list) > 1):
+                ls_tmp = my_list[1:]
+                for i in range(len(ls_tmp)):
+                    tmp = ls_tmp[i].split("=")
                     try:
-                        v.__dict__[tmp[0]] = eval(tmp[1])
-                    except BaseException:
-                        v.__dict__[tmp[0]] = tmp[1]
+                        tmp[1] = tmp[1].replace('"', '')
+                        v.__dict__[tmp[0]] = eval(tmp[1].replace('_', ' '))
+                    except Exception:
+                        v.__dict__[tmp[0]] = tmp[1].replace('_', ' ')
             v.save()
             print("{}".format(v.id))
         except SyntaxError:
@@ -125,29 +127,25 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representation of all instances
         Exceptions:
             NameError: when there is no object taht has the name
+
+            No se puede cambiar mucho la estructura para que no 
+            falle filestorage
         """
+        objects = storage.all()
         my_list = []
         if not line:
-            objects = storage.all()
             for key in objects:
-                try:
-                    my_list.append(objects[key])
-                except:
-                    my_list.append(key)
+                my_list.append(objects[key])
             print(my_list)
             return
         try:
             args = line.split(" ")
             if args[0] not in self.all_classes:
                 raise NameError()
-            objects = storage.all(args[0])
             for key in objects:
-                try:
-                    name = key.split('.')
-                    if name[0] == args[0]:
-                        my_list.append(objects[key])
-                except:
-                    my_list.append(key)
+                name = key.split('.')
+                if name[0] == args[0]:
+                    my_list.append(objects[key])
             print(my_list)
         except NameError:
             print("** class doesn't exist **")

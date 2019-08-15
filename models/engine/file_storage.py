@@ -34,7 +34,7 @@ class FileStorage:
             obj = self.__objects
             for key, value in obj.items():
                 name = key.split('.')
-                if name[0] == cls:
+                if name[0] == cls.__name__:
                     tmp.update({key: value})
             return tmp
 
