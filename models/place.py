@@ -32,20 +32,22 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+    reviews = relationship("Review", backref="place")
     amenity_ids = []
-
+    """
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review", backref="place")
     else:
-        def reviews(self):
-            """ Getter fuction for FileStorage mode
-            """
-            objs = models.storage.all()
-            tmp = []
-            for key, value in objs.items():
-                name = key.split('.')
-                if name[0] == "Review":
-                    if value.place_id == str(self.id):
-                        tmp.append(val)
-            return tmp
+    """
+    def get_reviews(self):
+        """ Getter fuction for FileStorage mode
+        """
+        objs = models.storage.all()
+        tmp = []
+        for key, value in objs.items():
+            name = key.split('.')
+            if name[0] == "Review":
+                if value.place_id == str(self.id):
+                    tmp.append(val)
+        return tmp
 

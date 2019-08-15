@@ -12,18 +12,21 @@ class State(BaseModel, Base):
     """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
+    cities = relationship("City", backref="state")
+    """
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         cities = relationship("City", backref="state")
     else:
-        def cities(self):
-            """ Getter fuction for FileStorage mode
-            """
-            objs = models.storage.all()
-            tmp = []
-            for key, value in objs.items():
-                name = key.split('.')
-                if name[0] == "City":
-                    if value.state_id == str(self.id):
-                        tmp.append(objs[key])
-            return tmp
+    """
+    def get_cities(self):
+        """ Getter fuction for FileStorage mode
+        """
+        objs = models.storage.all()
+        tmp = []
+        for key, value in objs.items():
+            name = key.split('.')
+            if name[0] == "City":
+                if value.state_id == str(self.id):
+                    tmp.append(objs[key])
+        return tmp
 
