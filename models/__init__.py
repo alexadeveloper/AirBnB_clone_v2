@@ -11,9 +11,9 @@ from models.place import Place
 from models.review import Review
 from os import getenv
 
+
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     storage = DBStorage()
-
 else:
     storage = FileStorage()
 storage.reload()
