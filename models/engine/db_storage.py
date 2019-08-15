@@ -7,6 +7,10 @@ from sqlalchemy.orm import sessionmaker
 from models.base_model import BaseModel, Base
 from models.state import State
 from models.city import City
+from models.user import User
+from models.review import Review
+from models.amenity import Amenity
+from models.place import Place
 from os import environ
 
 
@@ -15,6 +19,9 @@ class DBStorage:
     """
     __engine = None
     __session = None
+    cls_all = {
+            State,
+            City}
 
     def __init__(self):
         """ Initial connection to sql database
@@ -36,23 +43,27 @@ class DBStorage:
     def all(self, cls=None):
         """ Return only one cls or all in dict form
         """
+        items = {}
         if cls:
-            for i in self.__session.query(cls).all():
-                return d.__dict__
+            qry = self.__session.query(eval(cls)).all()
+            for value in qry:
+                items.update({"{}.{}".format(
+                    cls.__name__, value.id): value})
         else:
-            ''' Here is the problem need the correct format'''
-            items = self.__session.query(State).all()
-            new_dict = {}
-            for key in items:
-                print("key all db_storage.py", key.to_dict())
-            return new_dict
+            for item in self.cls_all:
+                qry = self.__session.query(item).all()
+                for value in qry:
+                    items.update(
+                        {"{}.{}".format(
+                            type(value).__name__, value.id): value})
+        return items
+
 
     def new(self, obj):
         """ add the object to the current database session
         """
         if obj:
             self.__session.add(obj)
-            self.save()
 
     def save(self):
         """ Commit changes to actual database session
