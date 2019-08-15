@@ -30,10 +30,9 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    reviews = relationship("Review", cascade="delete", backref="place")
+    reviews = relationship("Review", backref="place")
     amenity_ids = []
 
-    @property
     def get_reviews(self):
         """ Getter fuction for FileStorage mode
         """
@@ -42,7 +41,7 @@ class Place(BaseModel, Base):
         for key, value in objs.items():
             name = key.split('.')
             if name[0] == "Review":
-                if key.id == self.id:
-                    tmp.append(objs[key])
+                if value.place_id == str(self.id):
+                    tmp.append(val)
         return tmp
 
