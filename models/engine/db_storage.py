@@ -21,7 +21,8 @@ class DBStorage:
     __session = None
     cls_all = {
             State,
-            City}
+            City,
+            User}
 
     def __init__(self):
         """ Initial connection to sql database
