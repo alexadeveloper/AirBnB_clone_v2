@@ -22,7 +22,8 @@ class DBStorage:
     cls_all = {
             State,
             City,
-            User}
+            User,
+            Place}
 
     def __init__(self):
         """ Initial connection to sql database
