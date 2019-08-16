@@ -17,7 +17,7 @@ place_amenity = Table('place_amenity', Base.metadata,
                              ForeignKey("amenities.id"),
                              primary_key=True,
                              nullable=False))
-                      
+
 
 class Place(BaseModel, Base):
     """This is the class for Place
@@ -52,6 +52,27 @@ class Place(BaseModel, Base):
         reviews = relationship("Review", backref="place")
     else:
     """
+    @property
+    def amenities(self):
+        """ Getter function for FileStorage mode
+        """
+        objs = models.storage.all()
+        tmp = []
+        for key, value in objs.items():
+            name = key.split('.')
+            if name[0] == "Amenity":
+                for item in self.amenity_ids:
+                    if item == name[1]:
+                        tmp.append(val)
+        return tmp
+
+    @amenities.setter
+    def amenities(self, obj):
+        """ Setter function for FileStorage mode
+        """
+        if isinstance(obj, Amenity):
+            self.amenity_ids.append(obj.id)
+
     def get_reviews(self):
         """ Getter fuction for FileStorage mode
         """
@@ -63,4 +84,3 @@ class Place(BaseModel, Base):
                 if value.place_id == str(self.id):
                     tmp.append(val)
         return tmp
-
