@@ -51,7 +51,7 @@ class DBStorage:
             qry = self.__session.query(eval(cls)).all()
             for value in qry:
                 items.update({"{}.{}".format(
-                    cls.__name__, value.id): value})
+                    cls.__class__.__name__, value.id): value})
         else:
             for item in self.cls_all:
                 qry = self.__session.query(item).all()
