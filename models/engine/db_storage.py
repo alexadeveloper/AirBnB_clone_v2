@@ -24,7 +24,8 @@ class DBStorage:
             City,
             User,
             Place,
-            Review}
+            Review,
+            Amenity}
 
     def __init__(self):
         """ Initial connection to sql database

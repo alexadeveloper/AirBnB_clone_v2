@@ -47,42 +47,37 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place")
     amenity_ids = []
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
-        reviews = relationship("Review", backref="place")
-        amenities = relationship("Amenity",
-                                 secondary=place_amenity,
-                                 viewonly=False,
-                                 back_populates="place_amenities")
-    else:
-        @property
-        def amenities(self):
-            """ Getter function for FileStorage mode
-            """
-            objs = models.storage.all()
-            tmp = []
-            for key, value in objs.items():
-                name = key.split('.')
-                if name[0] == "Amenity":
-                    for item in self.amenity_ids:
-                        if item == name[1]:
-                            tmp.append(val)
-            return tmp
-
-        @amenities.setter
-        def amenities(self, obj):
-            """ Setter function for FileStorage mode
-            """
-            if isinstance(obj, Amenity):
-                self.amenity_ids.append(obj.id)
-
-        def get_reviews(self):
-            """ Getter fuction for FileStorage mode
-            """
-            objs = models.storage.all()
-            tmp = []
-            for key, value in objs.items():
-                name = key.split('.')
-                if name[0] == "Review":
-                    if value.place_id == str(self.id):
+    def get_amenities(self):
+        """ Getter function for FileStorage mode
+        """
+        objs = models.storage.all()
+        tmp = []
+        for key, value in objs.items():
+            name = key.split('.')
+            if name[0] == "Amenity":
+                for item in self.amenity_ids:
+                    if item == name[1]:
                         tmp.append(val)
-            return tmp
+        return tmp
+
+    def set_amenities(self, obj):
+        """ Setter function for FileStorage mode
+        """
+        if isinstance(obj, Amenity):
+            self.amenity_ids.append(obj.id)
+
+    def get_reviews(self):
+        """ Getter fuction for FileStorage mode
+        """
+        objs = models.storage.all()
+        tmp = []
+        for key, value in objs.items():
+            name = key.split('.')
+            if name[0] == "Review":
+                if value.place_id == str(self.id):
+                    tmp.append(val)
+        return tmp
+    amenities = relationship("Amenity",
+                             secondary=place_amenity,
+                             viewonly=False,
+                             back_populates="place_amenities")
