@@ -47,10 +47,11 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place")
     amenity_ids = []
-    amenities = relationship("Amenity",
-                             secondary=place_amenity,
-                             viewonly=False,
-                             back_populates="place_amenities")
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        amenities = relationship("Amenity",
+                                 secondary=place_amenity,
+                                 viewonly=False,
+                                 back_populates="place_amenities")
     def get_amenities(self):
         """ Getter function for FileStorage mode
         """
