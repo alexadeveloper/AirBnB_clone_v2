@@ -84,3 +84,7 @@ class Place(BaseModel, Base):
                 if value.place_id == str(self.id):
                     tmp.append(val)
         return tmp
+    amenities = relationship("Amenity",
+                             secondary=place_amenity,
+                             viewonly=False,
+                             back_populates="place_amenities")
