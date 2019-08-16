@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String
 from os import getenv
 
+
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
@@ -29,4 +30,3 @@ class State(BaseModel, Base):
                 if value.state_id == str(self.id):
                     tmp.append(objs[key])
         return tmp
-

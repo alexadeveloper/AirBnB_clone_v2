@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """This is the place class"""
+import models
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, Float, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
@@ -45,9 +46,9 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    reviews = relationship("Review", backref="place")
     amenity_ids = []
     if getenv("HBNB_TYPE_STORAGE") == "db":
+        reviews = relationship("Review", backref="place")
         amenities = relationship("Amenity",
                                  secondary=place_amenity,
                                  viewonly=False,

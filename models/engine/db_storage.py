@@ -35,8 +35,7 @@ class DBStorage:
                             environ['HBNB_MYSQL_USER'],
                             environ['HBNB_MYSQL_PWD'],
                             environ['HBNB_MYSQL_HOST'],
-                            environ['HBNB_MYSQL_DB']),
-                    pool_pre_ping=True)
+                            environ['HBNB_MYSQL_DB']), pool_pre_ping=True)
         try:
             if environ['HBNB_ENV'] is 'test':
                 for tbl in reversed(metadata.sorted_tables):
@@ -61,7 +60,6 @@ class DBStorage:
                         {"{}.{}".format(
                             type(value).__name__, value.id): value})
         return items
-
 
     def new(self, obj):
         """ add the object to the current database session

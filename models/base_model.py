@@ -7,7 +7,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
 
+
 Base = declarative_base()
+
 
 class BaseModel:
     """This class will defines all common attributes/methods

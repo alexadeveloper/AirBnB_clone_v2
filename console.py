@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
 
-            No se puede cambiar mucho la estructura para que no 
+            No se puede cambiar mucho la estructura para que no
             falle filestorage
         """
         objects = storage.all()
