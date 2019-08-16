@@ -72,6 +72,7 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("quit")
             self.assertEqual('', f.getvalue())
 
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "no db test")
     def test_create(self):
         """Test create command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -208,7 +209,7 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("User.destroy(12345)")
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
-
+    @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "no db test")
     def test_update(self):
         """Test alternate destroy command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:
