@@ -47,6 +47,10 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place")
     amenity_ids = []
+    amenities = relationship("Amenity",
+                             secondary=place_amenity,
+                             viewonly=False,
+                             back_populates="place_amenities")
     def get_amenities(self):
         """ Getter function for FileStorage mode
         """
@@ -77,7 +81,3 @@ class Place(BaseModel, Base):
                 if value.place_id == str(self.id):
                     tmp.append(val)
         return tmp
-    amenities = relationship("Amenity",
-                             secondary=place_amenity,
-                             viewonly=False,
-                             back_populates="place_amenities")
