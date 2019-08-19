@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 env.hosts = ['34.74.43.63', '35.231.32.10']
 
+
 def do_pack():
     """ generate a tgz """
     do_tar = "sudo tar -cvzf "
@@ -18,6 +19,7 @@ def do_pack():
         return "/versions/web_static_{}.tgz".format(date_now)
     except BaseException:
         return None
+
 
 def do_deploy(archive_path):
     """ distributes an archive to your web servers """
