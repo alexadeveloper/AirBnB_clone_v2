@@ -3,7 +3,6 @@
 from fabric.api import *
 from datetime import datetime
 import os
-env.hosts = ['34.74.43.63', '35.231.32.10']
 
 
 def do_pack():
@@ -17,8 +16,11 @@ def do_pack():
               .format(date_now) +
               "web_static")
         return "/versions/web_static_{}.tgz".format(date_now)
-    except BaseException:
+    except:
         return None
+
+
+env.hosts = ['34.74.43.63', '35.231.32.10']
 
 
 def do_deploy(archive_path):
@@ -38,14 +40,14 @@ def do_deploy(archive_path):
         run("sudo rm /data/web_static/current")
         run("sudo ln -s {} /data/web_static/current".format(inpath))
         return True
-
-    except Exception:
+    except:
         return False
 
 
 def deploy():
     """ creates and distributes an archive to your web servers """
     package = do_pack()
+    print("este es el path: ", package)
     if package is None:
         return False
     return do_deploy(package)
