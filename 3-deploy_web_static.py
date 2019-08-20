@@ -47,7 +47,6 @@ def do_deploy(archive_path):
 def deploy():
     """ creates and distributes an archive to your web servers """
     package = do_pack()
-    print("este es el path: ", package)
     if package is None:
         return False
     return do_deploy(package)
