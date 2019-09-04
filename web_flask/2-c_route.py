@@ -17,5 +17,11 @@ def hbnb():
     return "HBNB"
 
 
+@aplication.route('/', strict_slashes=False)
+def croute(text):
+    """ Displays hello message """
+    return "C %s" % text.replace('_', ' ')
+
+
 if __name__ == '__main__':
     aplication.run(host='0.0.0.0')
